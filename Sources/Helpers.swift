@@ -25,7 +25,13 @@ func showDebugPanel() {
     topVC.present(panel, animated: true, completion: nil)
 }
 
-public extension NotificationCenter {
+extension UIViewController {
+    open override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake { NotificationCenter.postShakeBegan() }
+    }
+}
+
+extension NotificationCenter {
     static func observeShakeBegan(completion: @escaping () -> Void) -> NSObjectProtocol {
         NotificationCenter.default.addObserver(forName: shakeBeganName, object: nil, queue: .main) { _ in
             completion()
