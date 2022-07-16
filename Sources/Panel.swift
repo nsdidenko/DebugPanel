@@ -10,7 +10,7 @@ public final class Panel {
         case byShake
     }
     
-    public func configure(_ showCondition: ShowCondition, customInfo: [CustomInfo]) {
+    public func configure(_ showCondition: ShowCondition, customInfo: [CustomInfo] = []) {
         switch showCondition {
         case .byShake:
             debugPanelObservation = NotificationCenter.observeShakeBegan {
