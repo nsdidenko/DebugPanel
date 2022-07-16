@@ -25,7 +25,7 @@ func showDebugPanel() {
     topVC.present(panel, animated: true, completion: nil)
 }
 
-extension NotificationCenter {
+public extension NotificationCenter {
     static func observeShakeBegan(completion: @escaping () -> Void) -> NSObjectProtocol {
         NotificationCenter.default.addObserver(forName: shakeBeganName, object: nil, queue: .main) { _ in
             completion()
