@@ -6,7 +6,7 @@ struct Row: View {
     
     var body: some View {
         HStack {
-            Text(left)
+            Text(left).padding(.trailing)
             Spacer()
             Text(right)
         }

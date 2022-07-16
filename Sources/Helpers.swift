@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import AdSupport
 
 func getTopViewController() -> UIViewController? {
     let keyWindow = UIApplication.shared.windows.filter(\.isKeyWindow).first
@@ -15,14 +16,17 @@ func getTopViewController() -> UIViewController? {
     }
 }
 
-func showDebugPanel() {
+func showDebugPanel(customInfo: [CustomInfo]) {
     guard let topVC = getTopViewController(),
           topVC as? UIHostingController<PanelView> == nil else { return }
     
     let panel = UIHostingController(
         rootView: PanelView(
+            bundleId: Bundle.main.bundleIdentifier.or("???"),
             version: Bundle.main.version.or("???"),
-            build: Bundle.main.build.or("???")))
+            build: Bundle.main.build.or("???"),
+            idfa: ASIdentifierManager.shared().advertisingIdentifier.uuidString,
+            customInfo: customInfo))
     
     let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .heavy)
     impactFeedbackgenerator.impactOccurred()
