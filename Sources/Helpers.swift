@@ -19,7 +19,11 @@ func showDebugPanel() {
     guard let topVC = getTopViewController(),
           topVC as? UIHostingController<PanelView> == nil else { return }
     
-    let panel = UIHostingController(rootView: PanelView())
+    let panel = UIHostingController(
+        rootView: PanelView(
+            version: Bundle.main.version.or("???"),
+            build: Bundle.main.build.or("???")))
+    
     let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .heavy)
     impactFeedbackgenerator.impactOccurred()
     topVC.present(panel, animated: true, completion: nil)
@@ -43,4 +47,25 @@ extension NotificationCenter {
     }
 
     private static var shakeBeganName: NSNotification.Name { .init(rawValue: "shake_began") }
+}
+
+extension Bundle {
+    var version: String? {
+        infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+    
+    var build: String? {
+        infoDictionary?["CFBundleVersion"] as? String
+    }
+}
+
+public extension Optional {
+    func or(_ value: Wrapped) -> Wrapped {
+        switch self {
+        case let .some(value):
+            return value
+        case .none:
+            return value
+        }
+    }
 }
