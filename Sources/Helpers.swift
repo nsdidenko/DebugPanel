@@ -16,6 +16,16 @@ func getTopViewController() -> UIViewController? {
     }
 }
 
+extension UUID {
+    var allZerosOrString: String {
+        let str = uuidString
+            .replacingOccurrences(of: "-", with: "")
+            .replacingOccurrences(of: "0", with: "")
+        
+        return str.isEmpty ? "all zeros" : uuidString
+    }
+}
+
 func showDebugPanel(customInfo: [CustomInfo]) {
     guard let topVC = getTopViewController(),
           topVC as? UIHostingController<PanelView> == nil else { return }
@@ -25,7 +35,7 @@ func showDebugPanel(customInfo: [CustomInfo]) {
             bundleId: Bundle.main.bundleIdentifier.or("???"),
             version: Bundle.main.version.or("???"),
             build: Bundle.main.build.or("???"),
-            idfa: ASIdentifierManager.shared().advertisingIdentifier.uuidString,
+            idfa: ASIdentifierManager.shared().advertisingIdentifier.allZerosOrString,
             customInfo: customInfo))
     
     let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .heavy)

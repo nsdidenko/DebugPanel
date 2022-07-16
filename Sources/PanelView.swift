@@ -1,10 +1,5 @@
 import SwiftUI
 
-public struct CustomInfo: Hashable {
-    public let title: String
-    public let value: String
-}
-
 struct PanelView: View {
     let bundleId: String
     let version: String
