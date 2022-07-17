@@ -7,6 +7,7 @@ struct PanelView: View {
     let idfa: String
     
     let customInfo: [CustomInfo]
+    let remoteConfigInfo: [RemoteConfigInfo]
     
     var body: some View {
         NavigationView {
@@ -19,6 +20,12 @@ struct PanelView: View {
                     
                     ForEach(customInfo, id: \.self) {
                         Row(left: $0.title, right: $0.value)
+                    }
+                }
+                
+                Section("Remote Config") {
+                    ForEach(remoteConfigInfo, id: \.self) {
+                        Row(left: $0.key, right: $0.value)
                     }
                 }
             }
@@ -37,6 +44,10 @@ struct PanelView_Previews: PreviewProvider {
             idfa: UUID().uuidString,
             customInfo: [
                 .init(title: "User ID", value: UUID().uuidString)
+            ],
+            remoteConfigInfo: [
+                .init(key: "push_notifications_enabled", value: "true"),
+                .init(key: "debug_panel_enabled", value: "true"),
             ])
     }
 }

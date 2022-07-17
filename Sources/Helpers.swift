@@ -26,7 +26,7 @@ extension UUID {
     }
 }
 
-func showDebugPanel(customInfo: [CustomInfo]) {
+func showDebugPanel(customInfo: [CustomInfo], remoteConfigInfo: [RemoteConfigInfo]) {
     guard let topVC = getTopViewController(),
           topVC as? UIHostingController<PanelView> == nil else { return }
     
@@ -36,7 +36,8 @@ func showDebugPanel(customInfo: [CustomInfo]) {
             version: Bundle.main.version.or("???"),
             build: Bundle.main.build.or("???"),
             idfa: ASIdentifierManager.shared().advertisingIdentifier.allZerosOrString,
-            customInfo: customInfo))
+            customInfo: customInfo,
+            remoteConfigInfo: remoteConfigInfo))
     
     let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .heavy)
     impactFeedbackgenerator.impactOccurred()
