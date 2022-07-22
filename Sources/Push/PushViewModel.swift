@@ -12,11 +12,13 @@ class PushViewModel: ObservableObject {
     
     func update() {
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            self.pushState.all = requests.map {
-                .init(
-                    id: $0.identifier,
-                    title: $0.content.title,
-                    body: $0.content.body)
+            DispatchQueue.main.async {
+                self.pushState.all = requests.map {
+                    .init(
+                        id: $0.identifier,
+                        title: $0.content.title,
+                        body: $0.content.body)
+                }
             }
         }
     }
