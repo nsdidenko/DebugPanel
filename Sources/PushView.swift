@@ -1,7 +1,8 @@
 import SwiftUI
 
-class PushState {
-    var all = [Push]()
+struct PushState {
+    let all: [Push]
+    var count: Int
 }
 
 struct Push: Hashable {
@@ -12,14 +13,26 @@ struct Push: Hashable {
 
 class PushViewModel: ObservableObject {
     @Published var pushState: PushState
-    
+
     init(pushState: PushState) {
         self.pushState = pushState
+    }
+    
+    func update() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.pushState.count += 1
+            self.objectWillChange.send()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.pushState.count += 1
+        }
     }
 }
 
 struct PushView: View {
     let pushes: [Push]
+    @StateObject var vm = PushViewModel(pushState: .init(all: [], count: 0))
     
     var body: some View {
         List {
@@ -29,6 +42,8 @@ struct PushView: View {
                     Row(left: "body", right: push.body)
                 }
             }
+            
+            Stepper("\(vm.pushState.count)", value: $vm.pushState.count)
         }
     }
 }
