@@ -23,6 +23,12 @@ struct PanelView: View {
                     }
                 }
                 
+                Section("Push Notifications") {
+                    NavigationLink("Scheduled") {
+                        PushView(pushes: [])
+                    }
+                }
+                
                 Section("Remote Config") {
                     ForEach(remoteConfigInfo, id: \.self) {
                         Row(left: $0.key, right: $0.value)
