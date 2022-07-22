@@ -16,6 +16,8 @@ class PushViewModel: ObservableObject {
 
     init(pushState: PushState) {
         self.pushState = pushState
+        
+        update()
     }
     
     func update() {
