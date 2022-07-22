@@ -16,6 +16,7 @@ struct PushView: View {
                 }
             }
         }
+        .navigationTitle("Push Notifications")
     }
 }
 

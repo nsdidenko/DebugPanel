@@ -1,4 +1,5 @@
 import SwiftUI
+import UserNotifications
 
 class PushViewModel: ObservableObject {
     @Published var pushState: PushState
@@ -10,11 +11,13 @@ class PushViewModel: ObservableObject {
     }
     
     func update() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.pushState.all = [
-                .init(id: "id-1", title: "title-1", body: "body-1"),
-                .init(id: "id-2", title: "title-2", body: "body-2")
-            ]
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            self.pushState.all = requests.map {
+                .init(
+                    id: $0.identifier,
+                    title: $0.content.title,
+                    body: $0.content.body)
+            }
         }
     }
 }
