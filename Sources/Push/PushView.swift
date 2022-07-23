@@ -4,14 +4,6 @@ import UserNotifications
 struct PushView: View {
     @StateObject var vm = PushViewModel(pushState: .init(requests: []))
     
-    private var requests: [UNNotificationRequest] {
-        vm.pushState.requests
-    }
-    
-    private func index(of request: UNNotificationRequest) -> String {
-        String(requests.firstIndex(of: request)!)
-    }
-    
     var body: some View {
         List {
             ForEach(requests, id: \.self) { request in
@@ -31,10 +23,36 @@ struct PushView: View {
                     if let trigger = request.trigger {
                         Row(left: "Repeats", right: String(trigger.repeats))
                     }
+                    
+                    ForEach(userInfo(from: request), id: \.self) { info in
+                        Row(left: info.key, right: info.value)
+                    }
                 }
             }
         }
         .navigationTitle("Push Notifications")
+    }
+    
+    // MARK: - Helpers
+    
+    private struct UserInfo: Hashable {
+        let key: String
+        let value: String
+    }
+    
+    private var requests: [UNNotificationRequest] {
+        vm.pushState.requests
+    }
+    
+    private func index(of request: UNNotificationRequest) -> String {
+        String(requests.firstIndex(of: request)!)
+    }
+    
+    private func userInfo(from request: UNNotificationRequest) -> [UserInfo] {
+        request.content.userInfo.map {
+            .init(key: $0 as? String ?? "???",
+                  value: $1 as? String ?? "???")
+        }
     }
 }
 
