@@ -8,19 +8,21 @@ struct PushView: View {
         vm.pushState.requests
     }
     
-    private func string(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, d MMM yyyy HH:mm:ss Z"
-        return formatter.string(from: date)
+    private func index(of request: UNNotificationRequest) -> String {
+        String(requests.firstIndex(of: request)!)
     }
     
     var body: some View {
         List {
             ForEach(requests, id: \.self) { request in
-                Section(request.identifier) {
+                Section(index(of: request)) {
+                    Row(left: "Id", right: request.identifier)
                     Row(left: "Title", right: request.content.title)
                     Row(left: "Body", right: request.content.body)
-                    Row(left: "Category ID", right: request.content.categoryIdentifier)
+                    
+                    if !request.content.categoryIdentifier.isEmpty {
+                        Row(left: "Category ID", right: request.content.categoryIdentifier)
+                    }
                     
                     if let badge = request.content.badge {
                         Row(left: "Badge", right: "\(badge)")
