@@ -23,8 +23,8 @@ struct PanelView: View {
                     }
                 }
                 
-                Section("Push Notifications") {
-                    NavigationLink("Scheduled", destination: PushView.init)
+                Section {
+                    NavigationLink("Push Notifications", destination: PushView.init)
                 }
                 
                 Section("Remote Config") {
